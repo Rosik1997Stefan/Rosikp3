@@ -25,7 +25,7 @@ Element.propTypes = {
     shells: PropTypes.array,
     color: PropTypes.string,
     fontColor: PropTypes.string,
-    i: PropTypes.string
+    i: PropTypes.number
 }
 
 export default Element;

@@ -4,18 +4,19 @@ import ElementsMK from '../Periodic-TableMK.js';
 import Element from './Element';
 import Search from './Search';
 
-
 class Table extends Component {
+
+	url = React.createRef();
 
 	constructor(){
 		super();
 		this.state = {
 			elements: Elements,
 			elementsMK: ElementsMK,
-			search: false
+			search: false,
+			iframeDiv: false
 		}
 	}
-
 
 	toggleSearch = (e)=> {
 	    e.preventDefault();
@@ -27,20 +28,43 @@ class Table extends Component {
     	this.setState({ search: false })
   	}
 
+  	rowInfo = (e) => {
+  		document.querySelector('.wikipedia').src = `${e.currentTarget.getAttribute( 'dataattr' )}`;
+  		this.setState({ iframeDiv: true });
+  	}
 
+  	rowClose = (e) => {
+  		e.preventDefault();
+  		this.setState({ iframeDiv: false });
+  	}
 
-
-  	
+	
 
 	render() {
 
+
 		return (
 			<div className={`Table ${this.state.search && 'fade'}`}>
-				<Search toggleSearch={this.toggleSearch} goBack={this.goBack} search={`overlay ${this.state.search && 'open'}`} />
+				<div className={this.state.iframeDiv ? 'iframe iopen' : 'iframe'}>
+						<a onClick={this.rowClose} href="/">&times;</a>
+						<iframe 
+							className='wikipedia' 
+							src="https://en.wikipedia.org/wiki/Alkali_metal" 
+							title="iframe" 
+							frameBorder="10" 
+							height="500px" 
+							width="1100px"
+							overflow-y="scroll"
+							overflow-x="hidden"
+						>
+								 <p>{this.props.lang ? 'Your browser does not support iframes.' : 'Вашиот прелистувач не поддржува iframes.'}</p>
+						</iframe>
+				</div>
+				<Search lang={this.props.lang} toggleSearch={this.toggleSearch} goBack={this.goBack} search={`overlay ${this.state.search && 'open'}`} />
 					<div className="topTable">
-						<h1>Periodic Table of Elements</h1>
+						<h1>{this.props.lang ? 'Periodic Table of Elements' : 'Периодна табела на елементите'}</h1>
 					<div className="Legend">
-						<h2>Legend</h2>
+						<h2>{this.props.lang ? "Legend" : "Легенда"}</h2>
 						<div className="legendField">
 							<span className="legendName">{this.props.lang ? 'Alkali Metals' : 'Алкални метали'}</span>
 						</div>
@@ -73,7 +97,7 @@ class Table extends Component {
 						</div>
 					</div>
 					<div className="Row r1" >
-					<label>
+					<label dataattr='https://en.wikipedia.org/wiki/Alkali_metal' onClick={this.rowInfo}>
 						1
 					</label>
 						{
@@ -89,7 +113,7 @@ class Table extends Component {
 											key={el.name}
 											color={el.category.replace(' ', '-')}
 											fontColor={el.color === null ? 'black' : 'white'}
-											i={el.name}
+											i={el.number}
 										/>	
 								})
 								:
@@ -104,14 +128,14 @@ class Table extends Component {
 											key={el.name}
 											color={el.category.replace(' ', '-')}
 											fontColor={el.color === null ? 'black' : 'white'}
-											i={el.name}
+											i={el.number}
 										/>	
 								})
 							
 						}
 					</div>
 					<div className="Row r2">
-					<label>
+					<label dataattr='https://en.wikipedia.org/wiki/Alkaline_earth_metal' onClick={this.rowInfo}>
 						2
 					</label>
 						{
@@ -127,7 +151,7 @@ class Table extends Component {
 											key={el.name}
 											color={el.category.replace(' ', '-')}
 											fontColor={el.color === null ? 'black' : 'white'}
-											i={el.name}
+											i={el.number}
 										/>	
 								})
 								:
@@ -142,13 +166,13 @@ class Table extends Component {
 											key={el.name}
 											color={el.category.replace(' ', '-')}
 											fontColor={el.color === null ? 'black' : 'white'}
-											i={el.name}
+											i={el.number}
 										/>	
 								})
 						}
 					</div>
 					<div className="Row r3">
-					<label>
+					<label dataattr="https://en.wikipedia.org/wiki/Group_3_element" onClick={this.rowInfo}>
 						3
 					</label>
 						{
@@ -164,7 +188,7 @@ class Table extends Component {
 											key={el.name}
 											color={el.category.replace(' ', '-')}
 											fontColor={el.color === null ? 'black' : 'white'}
-											i={el.name}
+											i={el.number}
 										/>	
 								})
 								:
@@ -179,13 +203,13 @@ class Table extends Component {
 											key={el.name}
 											color={el.category.replace(' ', '-')}
 											fontColor={el.color === null ? 'black' : 'white'}
-											i={el.name}
+											i={el.number}
 										/>	
 								})
 						}
 					</div>
 					<div className="Row r4">
-					<label>
+					<label dataattr="https://en.wikipedia.org/wiki/Group_4_element" onClick={this.rowInfo}>
 						4
 					</label>
 						{
@@ -201,7 +225,7 @@ class Table extends Component {
 											key={el.name}
 											color={el.category.replace(' ', '-')}
 											fontColor={el.color === null ? 'black' : 'white'}
-											i={el.name}
+											i={el.number}
 										/>	
 								})
 								:
@@ -216,13 +240,13 @@ class Table extends Component {
 											key={el.name}
 											color={el.category.replace(' ', '-')}
 											fontColor={el.color === null ? 'black' : 'white'}
-											i={el.name}
+											i={el.number}
 										/>	
 								})
 						}
 					</div>
 					<div className="Row r5">
-					<label>
+					<label dataattr="https://en.wikipedia.org/wiki/Group_5_element" onClick={this.rowInfo}>
 						5
 					</label>
 						{
@@ -238,7 +262,7 @@ class Table extends Component {
 											key={el.name}
 											color={el.category.replace(' ', '-')}
 											fontColor={el.color === null ? 'black' : 'white'}
-											i={el.name}
+											i={el.number}
 										/>	
 								})
 								:
@@ -253,13 +277,13 @@ class Table extends Component {
 											key={el.name}
 											color={el.category.replace(' ', '-')}
 											fontColor={el.color === null ? 'black' : 'white'}
-											i={el.name}
+											i={el.number}
 										/>	
 								})
 						}
 					</div>
 					<div className="Row r6">
-					<label>
+					<label dataattr="https://en.wikipedia.org/wiki/Group_6_element" onClick={this.rowInfo}>
 						6
 					</label>
 						{
@@ -275,7 +299,7 @@ class Table extends Component {
 											key={el.name}
 											color={el.category.replace(' ', '-')}
 											fontColor={el.color === null ? 'black' : 'white'}
-											i={el.name}
+											i={el.number}
 										/>	
 								})
 								:
@@ -290,13 +314,13 @@ class Table extends Component {
 											key={el.name}
 											color={el.category.replace(' ', '-')}
 											fontColor={el.color === null ? 'black' : 'white'}
-											i={el.name}
+											i={el.number}
 										/>	
 								})
 						}
 					</div>
 					<div className="Row r7">
-					<label>
+					<label dataattr="https://en.wikipedia.org/wiki/Group_7_element" onClick={this.rowInfo}>
 						7
 					</label>
 						{
@@ -312,7 +336,7 @@ class Table extends Component {
 											key={el.name}
 											color={el.category.replace(' ', '-')}
 											fontColor={el.color === null ? 'black' : 'white'}
-											i={el.name}
+											i={el.number}
 										/>	
 								})
 								:
@@ -327,13 +351,13 @@ class Table extends Component {
 											key={el.name}
 											color={el.category.replace(' ', '-')}
 											fontColor={el.color === null ? 'black' : 'white'}
-											i={el.name}
+											i={el.number}
 										/>	
 								})
 						}
 					</div>
 					<div className="Row r8">
-					<label>
+					<label dataattr="https://en.wikipedia.org/wiki/Group_8_element" onClick={this.rowInfo}>
 						8
 					</label>
 						{
@@ -349,7 +373,7 @@ class Table extends Component {
 											key={el.name}
 											color={el.category.replace(' ', '-')}
 											fontColor={el.color === null ? 'black' : 'white'}
-											i={el.name}
+											i={el.number}
 										/>	
 								})
 								:
@@ -364,13 +388,13 @@ class Table extends Component {
 											key={el.name}
 											color={el.category.replace(' ', '-')}
 											fontColor={el.color === null ? 'black' : 'white'}
-											i={el.name}
+											i={el.number}
 										/>	
 								})
 						}
 					</div>
 					<div className="Row r9">
-					<label>
+					<label dataattr="https://en.wikipedia.org/wiki/Group_9_element" onClick={this.rowInfo}>
 						9
 					</label>
 						{
@@ -386,7 +410,7 @@ class Table extends Component {
 											key={el.name}
 											color={el.category.replace(' ', '-')}
 											fontColor={el.color === null ? 'black' : 'white'}
-											i={el.name}
+											i={el.number}
 										/>	
 								})
 								:
@@ -401,13 +425,13 @@ class Table extends Component {
 											key={el.name}
 											color={el.category.replace(' ', '-')}
 											fontColor={el.color === null ? 'black' : 'white'}
-											i={el.name}
+											i={el.number}
 										/>	
 								})
 						}
 					</div>
 					<div className="Row r10">
-					<label>
+					<label dataattr="https://en.wikipedia.org/wiki/Group_10_element" onClick={this.rowInfo}>
 						10
 					</label>
 						{
@@ -423,7 +447,7 @@ class Table extends Component {
 											key={el.name}
 											color={el.category.replace(' ', '-')}
 											fontColor={el.color === null ? 'black' : 'white'}
-											i={el.name}
+											i={el.number}
 										/>	
 								})
 								:
@@ -438,13 +462,13 @@ class Table extends Component {
 											key={el.name}
 											color={el.category.replace(' ', '-')}
 											fontColor={el.color === null ? 'black' : 'white'}
-											i={el.name}
+											i={el.number}
 										/>	
 								})
 						}
 					</div>
 					<div className="Row r11">
-						<label>
+						<label dataattr="https://en.wikipedia.org/wiki/Group_11_element" onClick={this.rowInfo}>
 						11
 						</label>
 						{
@@ -460,7 +484,7 @@ class Table extends Component {
 											key={el.name}
 											color={el.category.replace(' ', '-')}
 											fontColor={el.color === null ? 'black' : 'white'}
-											i={el.name}
+											i={el.number}
 										/>	
 								})
 								:
@@ -475,13 +499,13 @@ class Table extends Component {
 											key={el.name}
 											color={el.category.replace(' ', '-')}
 											fontColor={el.color === null ? 'black' : 'white'}
-											i={el.name}
+											i={el.number}
 										/>	
 								})
 						}
 					</div>
 					<div className="Row r12">
-					<label>
+					<label dataattr="https://en.wikipedia.org/wiki/Group_12_element" onClick={this.rowInfo}>
 						12
 					</label>
 						{
@@ -497,7 +521,7 @@ class Table extends Component {
 											key={el.name}
 											color={el.category.replace(' ', '-')}
 											fontColor={el.color === null ? 'black' : 'white'}
-											i={el.name}
+											i={el.number}
 										/>	
 								})
 								:
@@ -512,13 +536,13 @@ class Table extends Component {
 											key={el.name}
 											color={el.category.replace(' ', '-')}
 											fontColor={el.color === null ? 'black' : 'white'}
-											i={el.name}
+											i={el.number}
 										/>	
 								})
 						}
 					</div>
 					<div className="Row r13">
-					<label>
+					<label dataattr="https://en.wikipedia.org/wiki/Boron_group" onClick={this.rowInfo}>
 						13
 					</label>
 						{
@@ -534,7 +558,7 @@ class Table extends Component {
 											key={el.name}
 											color={el.category.replace(' ', '-')}
 											fontColor={el.color === null ? 'black' : 'white'}
-											i={el.name}
+											i={el.number}
 										/>	
 								})
 								:
@@ -549,13 +573,13 @@ class Table extends Component {
 											key={el.name}
 											color={el.category.replace(' ', '-')}
 											fontColor={el.color === null ? 'black' : 'white'}
-											i={el.name}
+											i={el.number}
 										/>	
 								})
 						}
 					</div>
 					<div className="Row r14">
-					<label>
+					<label dataattr="https://en.wikipedia.org/wiki/Carbon_group" onClick={this.rowInfo}>
 						14
 					</label>
 						{
@@ -571,7 +595,7 @@ class Table extends Component {
 											key={el.name}
 											color={el.category.replace(' ', '-')}
 											fontColor={el.color === null ? 'black' : 'white'}
-											i={el.name}
+											i={el.number}
 										/>	
 								})
 								:
@@ -586,13 +610,13 @@ class Table extends Component {
 											key={el.name}
 											color={el.category.replace(' ', '-')}
 											fontColor={el.color === null ? 'black' : 'white'}
-											i={el.name}
+											i={el.number}
 										/>	
 								})
 						}
 					</div>
 					<div className="Row r15">
-					<label>
+					<label dataattr="https://en.wikipedia.org/wiki/Pnictogen" onClick={this.rowInfo}>
 						15
 					</label>
 						{
@@ -608,7 +632,7 @@ class Table extends Component {
 											key={el.name}
 											color={el.category.replace(' ', '-')}
 											fontColor={el.color === null ? 'black' : 'white'}
-											i={el.name}
+											i={el.number}
 										/>	
 								})
 								:
@@ -623,13 +647,13 @@ class Table extends Component {
 											key={el.name}
 											color={el.category.replace(' ', '-')}
 											fontColor={el.color === null ? 'black' : 'white'}
-											i={el.name}
+											i={el.number}
 										/>	
 								})
 						}
 					</div>
 					<div className="Row r16">
-					<label>
+					<label dataattr="https://en.wikipedia.org/wiki/Chalcogen" onClick={this.rowInfo}>
 						16
 					</label>
 						{
@@ -645,7 +669,7 @@ class Table extends Component {
 											key={el.name}
 											color={el.category.replace(' ', '-')}
 											fontColor={el.color === null ? 'black' : 'white'}
-											i={el.name}
+											i={el.number}
 										/>	
 								})
 								:
@@ -660,13 +684,13 @@ class Table extends Component {
 											key={el.name}
 											color={el.category.replace(' ', '-')}
 											fontColor={el.color === null ? 'black' : 'white'}
-											i={el.name}
+											i={el.number}
 										/>	
 								})
 						}
 					</div>
 					<div className="Row r17">
-					<label>
+					<label dataattr="https://en.wikipedia.org/wiki/Halogen" onClick={this.rowInfo}>
 						17
 					</label>
 						{
@@ -682,7 +706,7 @@ class Table extends Component {
 											key={el.name}
 											color={el.category.replace(' ', '-')}
 											fontColor={el.color === null ? 'black' : 'white'}
-											i={el.name}
+											i={el.number}
 										/>	
 								})
 								:
@@ -697,13 +721,13 @@ class Table extends Component {
 											key={el.name}
 											color={el.category.replace(' ', '-')}
 											fontColor={el.color === null ? 'black' : 'white'}
-											i={el.name}
+											i={el.number}
 										/>	
 								})
 						}
 					</div>
 					<div className="Row r18">
-					<label>
+					<label dataattr="https://en.wikipedia.org/wiki/Noble_gas" onClick={this.rowInfo}>
 						18
 					</label>
 						{
@@ -719,7 +743,7 @@ class Table extends Component {
 											key={el.name}
 											color={el.category.replace(' ', '-')}
 											fontColor={el.color === null ? 'black' : 'white'}
-											i={el.name}
+											i={el.number}
 										/>	
 								})
 								:
@@ -734,7 +758,7 @@ class Table extends Component {
 											key={el.name}
 											color={el.category.replace(' ', '-')}
 											fontColor={el.color === null ? 'black' : 'white'}
-											i={el.name}
+											i={el.number}
 										/>	
 								})
 						}
@@ -756,7 +780,7 @@ class Table extends Component {
 											key={el.name}
 											color={el.category.replace(' ', '-')}
 											fontColor={el.color === null ? 'black' : 'white'}
-											i={el.name}
+											i={el.number}
 										/>	
 								})
 								:
@@ -771,7 +795,7 @@ class Table extends Component {
 											key={el.name}
 											color={el.category.replace(' ', '-')}
 											fontColor={el.color === null ? 'black' : 'white'}
-											i={el.name}
+											i={el.number}
 										/>	
 								})
 							}
@@ -791,7 +815,7 @@ class Table extends Component {
 											key={el.name}
 											color={el.category.replace(' ', '-')}
 											fontColor={el.color === null ? 'black' : 'white'}
-											i={el.name}
+											i={el.number}
 										/>	
 								})
 								:
@@ -806,7 +830,7 @@ class Table extends Component {
 											key={el.name}
 											color={el.category.replace(' ', '-')}
 											fontColor={el.color === null ? 'black' : 'white'}
-											i={el.name}
+											i={el.number}
 										/>	
 								})
 							}
